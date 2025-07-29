@@ -8,6 +8,8 @@ class PouchSerializer(serializers.ModelSerializer):
 
     
 class PouchInSerializer(serializers.ModelSerializer):
+    pouch = PouchSerializer()
+    
     class Meta: 
         model = models.Pouch_In
         fields = ['id', 'pouch', 'quantity', 'date_created']
@@ -23,9 +25,11 @@ class PouchInSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 class PouchOutSerializer(serializers.ModelSerializer):
+    pouch = PouchSerializer()
+    
     class Meta: 
         model = models.Pouch_Out
-        fields = '__all__'
+        fields = ['id', 'getter', 'quantity', 'purpose', 'status', 'given', 'date_created', 'pouch']
 
     def create(self, validated_data):
         pouch = validated_data['pouch']
