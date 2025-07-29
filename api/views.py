@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from base.models import Pouch
+from base.models import Pouch, Pouch_In, Pouch_Out
 from .serializers import PouchSerializer, PouchInSerializer, PouchOutSerializer
 
 @api_view(['GET'])
@@ -46,4 +46,10 @@ def pouchOut(request):
         serializer.save()
     return Response(serializer.data)
     
-    
+#PUT REQUEST
+@api_view(['PUT'])
+def updateOutPouch(request):
+    serializer = PouchOutSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
