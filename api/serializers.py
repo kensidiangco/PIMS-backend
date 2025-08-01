@@ -14,6 +14,12 @@ class PouchInSerializer(serializers.ModelSerializer):
         model = models.Pouch_In
         fields = ['id', 'pouch', 'quantity', 'date_created']
 
+class PouchInFormSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Pouch_In
+        fields = ['pouch', 'quantity']
+
     def create(self, validated_data):
         pouch = validated_data['pouch']
         added_quantity = validated_data['quantity']
@@ -21,7 +27,7 @@ class PouchInSerializer(serializers.ModelSerializer):
         # increment pouch quantity
         pouch.quantity += added_quantity
         pouch.save()
-
+        print("working")
         return super().create(validated_data)
 
 class PouchOutSerializer(serializers.ModelSerializer):

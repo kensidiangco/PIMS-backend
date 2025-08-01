@@ -8,7 +8,7 @@ urlpatterns = [
     path('outlog/', views.getPouchOutData),
 
     #POST Req
-    path('add/', views.addPouch),
+    path('pouch/add/', views.addPouch),
     path('in/', views.pouchIn),
     path('out/', views.pouchOut),
 
