@@ -1,8 +1,15 @@
 from django.db import models
 
 class Pouch(models.Model):
-    size = models.CharField(max_length=50)
-    quantity = models.IntegerField(default=0, blank=True)
+    
+    SIZE_CHOICES = [
+        ('small', 'Small'),
+        ('medium', 'Medium'),
+        ('large', 'Large'),
+    ]
+
+    size = models.CharField(max_length=10, choices=SIZE_CHOICES, unique=True)
+    quantity = models.IntegerField(default=0)
     date_updated = models.DateTimeField(auto_now=True)
 
 class Pouch_In(models.Model):
