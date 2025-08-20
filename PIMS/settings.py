@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # or your frontend domain
+    "http://127.0.0.1:8000"
 ]
 
 # Application definition
