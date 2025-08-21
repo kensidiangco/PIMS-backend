@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from base.models import Pouch, Pouch_In, Pouch_Out
 from .serializers import PouchSerializer, PouchInSerializer, PouchOutSerializer, PouchOutFormSerializer, PouchInFormSerializer
+from django.utils import timezone
 
 @api_view(['GET'])
 def getPouchData(request):
@@ -19,9 +20,16 @@ def getPouchInData(request):
 
 @api_view(['GET'])
 def getPouchOutData(request):
-    pouchs = Pouch_Out.objects.all()
+    pouchs = Pouch_Out.objects.all().order_by('-date_created')
     serializer = PouchOutSerializer(pouchs, many=True)
 
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def pouch_out_today_latest(request):
+    today = timezone.now().date()
+    logs = Pouch_Out.objects.filter(date_created__date=today).order_by('-date_created')
+    serializer = PouchOutSerializer(logs, many=True)
     return Response(serializer.data)
 
 #POST REQUEST
