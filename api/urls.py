@@ -12,6 +12,7 @@ urlpatterns = [
     path('pouch/add/', views.addPouch),
     path('in/', views.pouchIn),
     path('out/', views.pouchOut),
+    path('bulk/', views.bulk_create_pouches),
 
     #PUT Req
     path('update/', views.updateOutPouch),

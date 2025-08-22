@@ -30,26 +30,6 @@ class PouchInSerializer(serializers.ModelSerializer):
     def get_date_created(self, obj):
         return obj.date_created.date().strftime("%d-%m-%y")
     
-class PouchInFormSerializer(serializers.ModelSerializer):
-    quantity_formatted = serializers.SerializerMethodField()
-
-    class Meta:
-        model = models.Pouch_In
-        fields = ['pouch', 'quantity', 'quantity_formatted']
-
-    def create(self, validated_data):
-        pouch = validated_data['pouch']
-        added_quantity = validated_data['quantity']
-        
-        # increment pouch quantity
-        pouch.quantity += added_quantity
-        pouch.save()
-        print("working")
-        return super().create(validated_data)
-    
-    def get_quantity_formatted(self, obj):
-        return "{:,}".format(obj.quantity)  
-    
 class PouchOutSerializer(serializers.ModelSerializer):
     pouch = PouchSerializer()
     quantity_formatted = serializers.SerializerMethodField()
@@ -75,8 +55,50 @@ class PouchOutSerializer(serializers.ModelSerializer):
     def get_quantity_formatted(self, obj):
         return "{:,}".format(obj.quantity)  
     
+    
+#FORM SERIALIZERS
+class PouchInFormSerializer(serializers.ModelSerializer):
+    quantity_formatted = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Pouch_In
+        fields = ['pouch', 'quantity', 'quantity_formatted']
+
+    def create(self, validated_data):
+        pouch = validated_data['pouch']
+        added_quantity = validated_data['quantity']
+        
+        # increment pouch quantity
+        pouch.quantity += added_quantity
+        pouch.save()
+        print("working")
+        return super().create(validated_data)
+    
+    def get_quantity_formatted(self, obj):
+        return "{:,}".format(obj.quantity)  
+
 class PouchOutFormSerializer(serializers.ModelSerializer):
     
+    class Meta: 
+        model = models.Pouch_Out
+        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch']
+
+    def create(self, validated_data):
+        pouch = validated_data['pouch']
+        added_quantity = validated_data['quantity']
+        
+        # increment pouch quantity
+        pouch.quantity -= added_quantity
+        pouch.save()
+
+        return super().create(validated_data)
+    
+class PouchBulkOutFormSerializer(serializers.ModelSerializer):
+    pouch = serializers.SlugRelatedField(
+        slug_field="size",   # use "small" | "medium" | "large"
+        queryset=models.Pouch.objects.all()
+    )
+
     class Meta: 
         model = models.Pouch_Out
         fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch']
