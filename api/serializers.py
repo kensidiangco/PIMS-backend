@@ -93,22 +93,37 @@ class PouchOutFormSerializer(serializers.ModelSerializer):
 
         return super().create(validated_data)
     
+
 class PouchBulkOutFormSerializer(serializers.ModelSerializer):
     pouch = serializers.SlugRelatedField(
-        slug_field="size",   # use "small" | "medium" | "large"
+        slug_field="size",   # "small" | "medium" | "large"
         queryset=models.Pouch.objects.all()
     )
 
     class Meta: 
         model = models.Pouch_Out
-        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch']
+        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch', 'date_created']
 
     def create(self, validated_data):
-        pouch = validated_data['pouch']
-        added_quantity = validated_data['quantity']
-        
-        # increment pouch quantity
-        pouch.quantity -= added_quantity
-        pouch.save()
+        # If bulk insert (many=True), validated_data will be a list
+        if isinstance(validated_data, list):
+            instances = []
+            for item in validated_data:
+                pouch = item['pouch']
+                qty = item['quantity']
 
-        return super().create(validated_data)
+                # decrement pouch quantity for each row
+                pouch.quantity -= qty
+                pouch.save()
+
+                instances.append(models.Pouch_Out.objects.create(**item))
+            return instances
+        else:
+            # single object
+            pouch = validated_data['pouch']
+            qty = validated_data['quantity']
+
+            pouch.quantity -= qty
+            pouch.save()
+
+            return models.Pouch_Out.objects.create(**validated_data)
