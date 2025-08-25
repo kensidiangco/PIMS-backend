@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     #GET Req
-    path('', views.getPouchData),
+    path('', views.getPouchesData),
+    path('pouch/<int:id>/', views.getPouchData),
     path('inlog/', views.getPouchInData),
     path('outlog/', views.getPouchOutData),
     path('latestlog/', views.pouch_out_today_latest),

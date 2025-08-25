@@ -6,23 +6,30 @@ from django.utils import timezone
 from rest_framework import status
 
 @api_view(['GET'])
-def getPouchData(request):
-    pouchs = Pouch.objects.all()
-    serializer = PouchSerializer(pouchs, many=True)
+def getPouchesData(request):
+    pouches = Pouch.objects.all()
+    serializer = PouchSerializer(pouches, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getPouchData(request, id):
+    pouch = Pouch_Out.objects.get(id=id)
+    serializer = PouchOutSerializer(pouch, many=False)
 
     return Response(serializer.data)
     
 @api_view(['GET'])
 def getPouchInData(request):
-    pouchs = Pouch_In.objects.all()
-    serializer = PouchInSerializer(pouchs, many=True)
+    pouches = Pouch_In.objects.all()
+    serializer = PouchInSerializer(pouches, many=True)
 
     return Response(serializer.data)
 
 @api_view(['GET'])
 def getPouchOutData(request):
-    pouchs = Pouch_Out.objects.all().order_by('-date_created')
-    serializer = PouchOutSerializer(pouchs, many=True)
+    pouches = Pouch_Out.objects.all().order_by('-date_created')
+    serializer = PouchOutSerializer(pouches, many=True)
 
     return Response(serializer.data)
 
