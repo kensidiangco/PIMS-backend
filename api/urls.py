@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.getPouchData),
     path('inlog/', views.getPouchInData),
     path('outlog/', views.getPouchOutData),
-    path('latestlog', views.pouch_out_today_latest),
+    path('latestlog/', views.pouch_out_today_latest),
 
     #POST Req
     path('pouch/add/', views.addPouch),
@@ -15,5 +15,5 @@ urlpatterns = [
     path('bulk/', views.bulk_create_pouches),
 
     #PUT Req
-    path('update/', views.updateOutPouch),
+    path('update/<int:id>/', views.updateOutPouch),
 ]

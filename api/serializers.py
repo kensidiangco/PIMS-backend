@@ -164,3 +164,9 @@ class PouchBulkOutFormSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({"quantity": f"have {p.quantity}, need {qty}"})
             models.Pouch.objects.filter(pk=p.pk).update(quantity=F("quantity") - qty)
             return models.Pouch_Out.objects.create(**validated_data)
+
+class PouchUpdateFormSerializer(serializers.ModelSerializer):
+    
+    class Meta: 
+        model = models.Pouch_Out
+        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch', 'date_created']

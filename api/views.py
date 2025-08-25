@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from base.models import Pouch, Pouch_In, Pouch_Out
-from .serializers import PouchSerializer, PouchInSerializer, PouchOutSerializer, PouchOutFormSerializer, PouchInFormSerializer, PouchBulkOutFormSerializer
+from .serializers import PouchSerializer, PouchInSerializer, PouchOutSerializer, PouchOutFormSerializer, PouchInFormSerializer, PouchBulkOutFormSerializer, PouchUpdateFormSerializer
 from django.utils import timezone
 from rest_framework import status
 
@@ -67,12 +67,25 @@ def bulk_create_pouches(request):
     out = PouchBulkOutFormSerializer(objs, many=True)
     return Response(out.data, status=status.HTTP_201_CREATED)
     
-#PUT REQUEST
+# PUT REQUEST
 @api_view(['PUT'])
-def updateOutPouch(request):
-    serializer = PouchOutSerializer(data=request.data)
+def updateOutPouch(request, id):
+    try:
+        pouch_out = Pouch_Out.objects.get(id=id)
+    except Pouch_Out.DoesNotExist:
+        return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PouchUpdateFormSerializer(instance=pouch_out, data=request.data, partial=True)
+    
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 👇 return detailed validation errors
+    return Response({
+        "errors": serializer.errors,
+        "data_sent": request.data
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
     
