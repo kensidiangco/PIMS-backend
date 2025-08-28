@@ -14,6 +14,7 @@ urlpatterns = [
     path('out/', views.pouchOut),
     path('bulk/', views.bulk_create_pouches),
 
+    path('pouch/paid/<int:id>/', views.markPouchAsPaid),
     path('update/<int:id>/', views.updateOutPouch),
     path('delete/<int:id>/', views.deleteOutPouch),
 ]
