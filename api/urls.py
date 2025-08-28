@@ -9,12 +9,11 @@ urlpatterns = [
     path('outlog/', views.getPouchOutData),
     path('latestlog/', views.pouch_out_today_latest),
 
-    #POST Req
     path('pouch/add/', views.addPouch),
     path('in/', views.pouchIn),
     path('out/', views.pouchOut),
     path('bulk/', views.bulk_create_pouches),
 
-    #PUT Req
     path('update/<int:id>/', views.updateOutPouch),
+    path('delete/<int:id>/', views.deleteOutPouch),
 ]

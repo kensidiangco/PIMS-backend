@@ -100,5 +100,17 @@ def updateOutPouch(request, id):
         "data_sent": request.data
     }, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def deleteOutPouch(request, id):
+    try:
+        pouch_out = Pouch_Out.objects.get(id=id)
+    except Pouch_Out.DoesNotExist:
+        return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    # Revert the quantity back to the Pouch
+    pouch_out.pouch.quantity += pouch_out.quantity
+    pouch_out.pouch.save()
     
+    pouch_out.delete()
+    
+    return Response(status=status.HTTP_204_NO_CONTENT)
