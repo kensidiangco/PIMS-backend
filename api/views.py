@@ -85,7 +85,13 @@ def updateOutPouch(request, id):
     serializer = PouchUpdateFormSerializer(instance=pouch_out, data=request.data, partial=True)
     
     if serializer.is_valid():
+        pouch_out.pouch.quantity += pouch_out.quantity  # Revert the previous quantity deduction
+        # Only update if the new quantity is less than or equal to the available quantity
+        pouch_out.pouch.quantity -= request.data['quantity']
+        pouch_out.pouch.save()
+        
         serializer.save()
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 👇 return detailed validation errors
