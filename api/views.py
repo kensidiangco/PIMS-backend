@@ -21,7 +21,7 @@ def getPouchData(request, id):
     
 @api_view(['GET'])
 def getPouchInData(request):
-    pouches = Pouch_In.objects.all()
+    pouches = Pouch_In.objects.all().order_by('-date_created')
     serializer = PouchInSerializer(pouches, many=True)
 
     return Response(serializer.data)

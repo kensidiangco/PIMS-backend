@@ -10,7 +10,6 @@ class Pouch(models.Model):
 
     size = models.CharField(max_length=10, choices=SIZE_CHOICES, unique=True)
     quantity = models.IntegerField(default=0)
-    inbounded_quantity = models.IntegerField(default=0)
     date_updated = models.DateTimeField(auto_now=True)
 
 class Pouch_In(models.Model):
@@ -26,5 +25,5 @@ class Pouch_Out(models.Model):
     purpose = models.CharField(max_length=100)
     status = models.CharField(max_length=100, default="Free")
     given = models.CharField(max_length=100)
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField()
     date_updated = models.DateTimeField(auto_now=True)
