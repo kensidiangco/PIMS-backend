@@ -4,7 +4,11 @@ from .models import Pouch
 
 @receiver(post_migrate)
 def create_default_pouches(sender, **kwargs):
-    if sender.name == 'base':  # replace with your app's name
-        default_sizes = ['small', 'medium', 'large']
-        for size in default_sizes:
-            Pouch.objects.get_or_create(size=size, defaults={'quantity': 0})
+    from .models import Pouch
+    if not Pouch.objects.exists():
+        Pouch.objects.bulk_create([
+            Pouch(size="Small", quantity=0),
+            Pouch(size="Medium", quantity=0),
+            Pouch(size="Large", quantity=0),
+        ])
+
