@@ -81,7 +81,7 @@ class PouchOutFormSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = models.Pouch_Out
-        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch']
+        fields = ['getter', 'quantity', 'purpose', 'status', 'given', 'pouch', 'date_created']
 
     def create(self, validated_data):
         pouch = validated_data['pouch']
