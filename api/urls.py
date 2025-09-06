@@ -5,9 +5,10 @@ urlpatterns = [
     #GET Req
     path('', views.getPouchesData),
     path('pouch/<int:id>/', views.getPouchData),
-    path('inlog/', views.getPouchInData),
-    path('outlog/', views.getPouchOutData),
-    path('latestlog/', views.pouch_out_today_latest),
+    path('pouch/inbounded/', views.getPouchInData),
+    path('pouch/outbounded/', views.getPouchOutData),
+    path('pouch/recent/outbounded/', views.pouch_out_today_latest),
+    path('pouch/inbounded/<int:id>/', views.getInboundedPouchData),
 
     path('pouch/add/', views.addPouch),
     path('in/', views.pouchIn),

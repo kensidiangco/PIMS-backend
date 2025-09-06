@@ -18,6 +18,13 @@ def getPouchData(request, id):
     serializer = PouchOutSerializer(pouch, many=False)
 
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getInboundedPouchData(request, id):
+    pouch = Pouch_Out.objects.get(id=id)
+    serializer = PouchOutSerializer(pouch, many=False)
+
+    return Response(serializer.data)
     
 @api_view(['GET'])
 def getPouchInData(request):
@@ -36,7 +43,7 @@ def getPouchOutData(request):
 @api_view(['GET'])
 def pouch_out_today_latest(request):
     today = timezone.now().date()
-    logs = Pouch_Out.objects.filter(date_created__date=today).order_by('-date_created')
+    logs = Pouch_Out.objects.filter(date_created=today).order_by('-date_created')
     serializer = PouchOutSerializer(logs, many=True)
     return Response(serializer.data)
 

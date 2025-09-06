@@ -25,5 +25,5 @@ class Pouch_Out(models.Model):
     purpose = models.CharField(max_length=100)
     status = models.CharField(max_length=100, default="Free")
     given = models.CharField(max_length=100)
-    date_created = models.DateTimeField()
+    date_created = models.DateField()
     date_updated = models.DateTimeField(auto_now=True)
